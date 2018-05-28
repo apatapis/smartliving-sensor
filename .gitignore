@@ -30,3 +30,5 @@ target/classes/META-INF/MANIFEST\.MF
 target/classes/META-INF/maven/di\.smartliving/sensor/pom\.properties
 
 target/classes/
+
+target/maven-status/maven-compiler-plugin/compile/default-compile/

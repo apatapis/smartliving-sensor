@@ -2,7 +2,9 @@ package di.smartliving.sensor.web.mqtt.dto;
 
 import java.math.BigDecimal;
 
-import di.smartliving.sensor.web.rest.resource.SendMessageOnceRequest;
+import di.smartliving.sensor.util.MathUtils;
+import di.smartliving.sensor.web.rest.resource.RepeatMessageRequest;
+import di.smartliving.sensor.web.rest.resource.SendMessageRequest;
 
 public class SensorMessage {
 
@@ -39,11 +41,21 @@ public class SensorMessage {
 		return "SensorMessage [sensorId=" + sensorId + ", unit=" + unit + ", value=" + value + "]";
 	}
 
-	public static SensorMessage from(SendMessageOnceRequest sendMessageOnceRequest) {
+	public static SensorMessage from(SendMessageRequest sendMessageRequest) {
 		SensorMessage sensorMessage = new SensorMessage();
-		sensorMessage.setSensorId(sendMessageOnceRequest.getSensorId());
-		sensorMessage.setUnit(sendMessageOnceRequest.getUnit());
-		sensorMessage.setValue(sendMessageOnceRequest.getValue());
+		sensorMessage.setSensorId(sendMessageRequest.getSensorId());
+		sensorMessage.setUnit(sendMessageRequest.getUnit());
+		sensorMessage.setValue(sendMessageRequest.getValue());
 		return sensorMessage;
 	}
+
+	public static SensorMessage from(RepeatMessageRequest repeatMessageRequest) {
+		SensorMessage sensorMessage = new SensorMessage();
+		sensorMessage.setSensorId(repeatMessageRequest.getSensorId());
+		sensorMessage.setUnit(repeatMessageRequest.getUnit());
+		sensorMessage
+				.setValue(MathUtils.random(repeatMessageRequest.getValueMin(), repeatMessageRequest.getValueMax()));
+		return sensorMessage;
+	}
+
 }

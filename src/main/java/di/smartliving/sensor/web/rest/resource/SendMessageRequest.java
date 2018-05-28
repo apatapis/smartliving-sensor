@@ -2,7 +2,7 @@ package di.smartliving.sensor.web.rest.resource;
 
 import java.math.BigDecimal;
 
-public class SendMessageOnceRequest {
+public class SendMessageRequest {
 
 	private String sensorId;
 	private String topic;
@@ -43,7 +43,8 @@ public class SendMessageOnceRequest {
 
 	@Override
 	public String toString() {
-		return "SendMessageOnceRequest [topic=" + topic + ", unit=" + unit + ", value=" + value + "]";
+		return "SendMessageRequest [sensorId=" + sensorId + ", topic=" + topic + ", unit=" + unit + ", value=" + value
+				+ "]";
 	}
 
 }
