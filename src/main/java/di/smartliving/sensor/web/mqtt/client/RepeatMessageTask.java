@@ -6,6 +6,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import di.smartliving.sensor.global.PublisherHandler;
 import di.smartliving.sensor.web.mqtt.dto.SensorMessage;
 import di.smartliving.sensor.web.rest.resource.RepeatMessageRequest;
@@ -40,7 +43,12 @@ public class RepeatMessageTask implements Runnable {
 	private void sendMessages() {
 		for (int i = 0; i < repeatMessageRequest.getTimes(); i++) {
 			MqttMessage mqttMessage = new MqttMessage();
-			mqttMessage.setPayload(SensorMessage.from(repeatMessageRequest).toString().getBytes());
+			try {
+				mqttMessage.setPayload(
+						new ObjectMapper().writeValueAsString(SensorMessage.from(repeatMessageRequest)).getBytes());
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
 			try {
 				mqttClient.publish(repeatMessageRequest.getTopic(), mqttMessage);
 			} catch (MqttException e) {

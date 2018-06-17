@@ -4,6 +4,9 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import di.smartliving.sensor.web.mqtt.dto.SensorMessage;
 import di.smartliving.sensor.web.rest.resource.RepeatMessageRequest;
 
@@ -31,7 +34,11 @@ public class MqttPublisher {
 		try {
 			mqttClient.connect();
 			MqttMessage mqttMessage = new MqttMessage();
-			mqttMessage.setPayload(sensorMessage.toString().getBytes());
+			try {
+				mqttMessage.setPayload(new ObjectMapper().writeValueAsString(sensorMessage).getBytes());
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
 			mqttClient.publish(topic, mqttMessage);
 			mqttClient.disconnect();
 		} catch (MqttException e) {
